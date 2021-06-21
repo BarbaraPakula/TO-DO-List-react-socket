@@ -1,0 +1,81 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+/tmp
+
+.vscode
+.idea 
+ 51  client/app.js 
+@@ -0,0 +1,51 @@
+const loginForm = document.getElementById('welcome-form');
+const messagesSection = document.getElementById('messages-section');
+const messagesList = document.getElementById('messages-list');
+const addMessageForm = document.getElementById('add-messages-form');
+const userNameInput = document.getElementById('username');
+const messageContentInput = document.getElementById('message-content');
+
+let userName = '';
+
+loginForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const login = e => {
+    if (userNameInput.value) {
+      userName = userNameInput.value;
+      loginForm.classList.toggle('show');
+      messagesSection.classList.toggle('show');
+    } else {
+      alert('You have to log in- type your name');
+    }
+  }
+  login(e);
+});
+
+
+addMessageForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const sendMessage = () => {
+    if (messageContentInput.value) {
+      addMessage(userName, messageContentInput.value)
+      messageContentInput.value = '';
+    } else {
+      alert('Please write your message')
+    }
+
+  }
+  sendMessage();
+})
+
+const addMessage = (author, content) => {
+  const message = document.createElement('li');
+  message.classList.add('message');
+  message.classList.add('message--received');
+  if (author === userName) message.classList.add('message--self');
+  message.innerHTML = `
+      <h3 class="message__author">${userName === author ? 'You' : author}</h3>
+      <div class="message__content">
+        ${content}
+      </div>
+    `;
+  messagesList.appendChild(message);
+}
